@@ -1,6 +1,6 @@
 package banking;
 
-import  org.sqlite.SQLiteDataSource;
+import org.sqlite.SQLiteDataSource;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -25,29 +25,29 @@ public class AccountsDB {
         }
     }
 
-    public  void createCardTable(){
+    public void createCardTable() {
         try {
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS card(\n"
                     + "     id INTEGER PRIMARY KEY,\n"
                     + "     number TEXT,\n"
                     + "     pin TEXT,\n"
                     + "     balance INTEGER DEFAULT 0"
-                    + ");" );
+                    + ");");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void addAccountInDB(String cardNumber,String PIN){
+    public void addAccountInDB(String cardNumber, String PIN) {
         try {
             statement.executeUpdate("INSERT INTO card(number,pin) VALUES"
-                    +"('"+cardNumber+"','"+String.valueOf(PIN)+"')");
+                    + "('" + cardNumber + "','" + String.valueOf(PIN) + "')");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    public boolean checkLogInCredentialsFromDB(String cardNumber,String PIN) {
+    public boolean checkLogInCredentialsFromDB(String cardNumber, String PIN) {
         try (ResultSet allCards = statement.executeQuery("SELECT * FROM card")) {
             while (allCards.next()) {
                 // Retrieve column values
@@ -64,14 +64,14 @@ public class AccountsDB {
         return false;
     }
 
-    public boolean ccNumberInDB(String cardNumber){
+    public boolean ccNumberInDB(String cardNumber) {
         try (ResultSet allCards = statement.executeQuery("SELECT * FROM card")) {
             while (allCards.next()) {
                 // Retrieve column values
 
                 String card = allCards.getString("number");
-                if(card.equals(cardNumber))
-                   return true;
+                if (card.equals(cardNumber))
+                    return true;
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -79,27 +79,27 @@ public class AccountsDB {
         return false;
     }
 
-    public void addBalanceInDB(int sumOfMoney,String cardNumber){
+    public void addBalanceInDB(int sumOfMoney, String cardNumber) {
         try {
-            statement.executeUpdate("UPDATE card SET balance=balance + " + sumOfMoney +"\n"
-                    +" WHERE number=" + cardNumber + ";");
+            statement.executeUpdate("UPDATE card SET balance=balance + " + sumOfMoney + "\n"
+                    + " WHERE number=" + cardNumber + ";");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    public void subtractBalanceInDB(int sumOfMoney,String cardNumber){
+    public void subtractBalanceInDB(int sumOfMoney, String cardNumber) {
         try {
-            statement.executeUpdate("UPDATE card SET balance=balance - " + sumOfMoney +"\n"
-                    +" WHERE number=" + cardNumber + ";");
+            statement.executeUpdate("UPDATE card SET balance=balance - " + sumOfMoney + "\n"
+                    + " WHERE number=" + cardNumber + ";");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    public int getBalance(String cardNumber){
+    public int getBalance(String cardNumber) {
         try (ResultSet currentAccount = statement.executeQuery("SELECT balance FROM card WHERE number=" + cardNumber + ";")) {
-            if(currentAccount.next()) {
+            if (currentAccount.next()) {
                 // Retrieve column values
                 return currentAccount.getInt("balance");
             }
@@ -109,7 +109,7 @@ public class AccountsDB {
         return 0;
     }
 
-    public void deleteAccountFromDB(String cardNumber){
+    public void deleteAccountFromDB(String cardNumber) {
         try {
             statement.executeUpdate("DELETE FROM card WHERE number=" + cardNumber + ";");
         } catch (SQLException throwables) {
@@ -117,8 +117,8 @@ public class AccountsDB {
         }
     }
 
-    public void closeAll(){
-        if(statement!=null || connection!=null) {
+    public void closeAll() {
+        if (statement != null || connection != null) {
             try {
                 statement.close();
                 connection.close();
