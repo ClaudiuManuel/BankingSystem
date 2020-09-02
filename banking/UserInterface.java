@@ -3,16 +3,16 @@ package banking;
 import java.util.Scanner;
 
 public class UserInterface {
-    Scanner reader =new Scanner(System.in);
+    Scanner reader = new Scanner(System.in);
     AccountsManager accountsManager;
 
-    public void start(String DBName){
-        accountsManager=new AccountsManager(DBName);
-        int choice=-1;
-        int choiceInAccountMenu=-1;
-        while(choice!=0) {
+    public void start(String DBName) {
+        accountsManager = new AccountsManager(DBName);
+        int choice = -1;
+        int choiceInAccountMenu = -1;
+        while (choice != 0) {
             printStartingMenu();
-            choice=readInteger();
+            choice = readInteger();
             switch (choice) {
                 case 1:
                     accountsManager.addAccount();
@@ -23,31 +23,31 @@ public class UserInterface {
                     System.out.println("Enter your PIN:");
                     int pin = readInteger();
                     System.out.println("");
-                    if(accountsManager.LogIn(cardNumber,pin)) {
+                    if (accountsManager.LogIn(cardNumber, pin)) {
                         System.out.println("You have successfully logged in!");
-                        while(choiceInAccountMenu!=0&&choiceInAccountMenu!=5){
+                        while (choiceInAccountMenu != 0 && choiceInAccountMenu != 5) {
                             printAccountMenu();
-                            choiceInAccountMenu=readInteger();
-                            switch (choiceInAccountMenu){
+                            choiceInAccountMenu = readInteger();
+                            switch (choiceInAccountMenu) {
                                 case 0:
-                                    choice=0;
+                                    choice = 0;
                                     break;
                                 case 1:
                                     accountsManager.getCurrentAccBalance();
                                     break;
                                 case 2:
                                     System.out.println("Enter income:");
-                                    int balance=readInteger();
+                                    int balance = readInteger();
                                     accountsManager.addBalance(balance);
                                     break;
                                 case 3:
                                     System.out.println("Transfer");
                                     System.out.println("Enter card number:");
-                                    String receiver=reader.nextLine();
-                                    if(accountsManager.validReceiver(receiver)) {
+                                    String receiver = reader.nextLine();
+                                    if (accountsManager.validReceiver(receiver)) {
                                         System.out.println("Enter how much money you want to transfer:");
-                                        int sumOfMoney=readInteger();
-                                        accountsManager.doTransfer(sumOfMoney,receiver);
+                                        int sumOfMoney = readInteger();
+                                        accountsManager.doTransfer(sumOfMoney, receiver);
                                     }
                                     break;
                                 case 4:
@@ -58,7 +58,7 @@ public class UserInterface {
                                     break;
                             }
                         }
-                    }else
+                    } else
                         System.out.println("Wrong card number or PIN!");
                     break;
                 case 0:
@@ -71,16 +71,16 @@ public class UserInterface {
         accountsManager.closeDB();
     }
 
-    public int readInteger(){
-        try{
+    public int readInteger() {
+        try {
             return Integer.parseInt(reader.nextLine());
-        }catch(NumberFormatException  e){
+        } catch (NumberFormatException e) {
             e.printStackTrace();
         }
         return 0;
     }
 
-    public static void printStartingMenu(){
+    public static void printStartingMenu() {
         System.out.println("");
         System.out.println("1. Create an account\n" +
                 "2. Log into account\n" +
@@ -88,7 +88,7 @@ public class UserInterface {
         System.out.println("");
     }
 
-    public static void printAccountMenu(){
+    public static void printAccountMenu() {
         System.out.println("");
         System.out.println("1. Balance\n" +
                 "2. Add income\n" +
